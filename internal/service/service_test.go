@@ -66,14 +66,18 @@ func TestCreateInventoryItemWithValidProduct(t *testing.T) {
 		Name:  "Garden Supplies Co",
 		Email: "info@gardensupplies.com",
 	}
-	svc.CreateVendor(vendor)
+	if err := svc.CreateVendor(vendor); err != nil {
+		t.Fatalf("Failed to create vendor: %v", err)
+	}
 
 	product := &models.Product{
 		ID:       "p1",
 		Name:     "Fertilizer",
 		VendorID: "v1",
 	}
-	svc.CreateProduct(product)
+	if err := svc.CreateProduct(product); err != nil {
+		t.Fatalf("Failed to create product: %v", err)
+	}
 
 	// Create inventory item
 	item := &models.InventoryItem{

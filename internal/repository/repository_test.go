@@ -154,13 +154,25 @@ func TestCreateProductAndInventory(t *testing.T) {
 func TestUpdateInventoryQuantity(t *testing.T) {
 	repo := NewInMemoryRepository()
 
-	// Create product first
+	// Create vendor first
+	vendor := &models.Vendor{
+		ID:    "v1",
+		Name:  "Garden Supplies Co",
+		Email: "info@gardensupplies.com",
+	}
+	if err := repo.CreateVendor(vendor); err != nil {
+		t.Fatalf("Failed to create vendor: %v", err)
+	}
+
+	// Create product
 	product := &models.Product{
 		ID:       "p1",
 		Name:     "Fertilizer",
 		VendorID: "v1",
 	}
-	repo.CreateProduct(product)
+	if err := repo.CreateProduct(product); err != nil {
+		t.Fatalf("Failed to create product: %v", err)
+	}
 
 	// Create inventory item
 	item := &models.InventoryItem{
@@ -169,7 +181,9 @@ func TestUpdateInventoryQuantity(t *testing.T) {
 		Quantity:  100,
 		Location:  "Warehouse A",
 	}
-	repo.CreateInventoryItem(item)
+	if err := repo.CreateInventoryItem(item); err != nil {
+		t.Fatalf("Failed to create inventory item: %v", err)
+	}
 
 	// Update quantity
 	err := repo.UpdateInventoryQuantity("i1", 50)
